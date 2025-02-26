@@ -1,0 +1,50 @@
+# Virtual environment
+myEnv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables
+.env
+
+# IDE and editor files
+.vscode/
+.idea/
+.DS_Store
+
+# Dependency files
+Pipfile
+Pipfile.lock
+poetry.lock
+
+# Database files
+*.db
+*.sqlite3
+
+# Log files
+*.log
+logs/
+
+# Static and uploaded files
+/static/uploads/
+/static/generated/
+
+# Testing and coverage
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Build and distribution
+dist/
+build/
+*.egg-info/
+
+# Miscellaneous
+*.swp
+*.swo
+*.tmp
