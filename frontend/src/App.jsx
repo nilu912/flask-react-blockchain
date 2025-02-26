@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import "./App.css";
+import Block from "./components/Block";
+import AddBlock from "./components/AddBlock";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [chain, setChain] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchChain = () => {
+      fetch("http://127.0.0.1:5000/get-chain/")
+        .then((response) => response.json())
+        .then((data) => {
+          setChain(data.chain);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching blockchain data: ", error);
+          setLoading(false);
+        });
+    };
+    fetchChain();
+    const interval = setInterval(fetchChain, 5000);
+    return () => clearInterval(interval);
+  }, []);
+  const addBlockData = (data) => {
+    fetch("http://127.0.0.1:5000/transactions/new", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sender: data.sender,
+        receiver: data.receiver,
+        amount: data.amount,
+      }),
+    });
+  };
+  // if(!loading) return <h5>Blockchain data is loading...</h5>
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1 className="m-5">Hello world</h1>
+      <AddBlock addBlockData={addBlockData} />
+      <Block data={chain} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

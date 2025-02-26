@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template # type: ignore
+from flask_cors import CORS # type: ignore
 from blockchain import Blockchain, Transaction, Block
 
 my_blockchain = Blockchain(difficulty=2)
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def home():
